@@ -133,10 +133,10 @@ exports.bookinstance_update_get = function(req, res, next) {
     // Get book, authors and genres for form.
     async.parallel({
         bookinstance: function(callback) {
-            BookInstance.findById(req.params.id).populate('book').exec(callback)
+            BookInstance.findById(req.params.id).populate('book').exec(callback);
         },
         books: function(callback) {
-            Book.find(callback)
+            Book.find().exec(callback);
         },
 
         }, function(err, results) {
@@ -147,7 +147,7 @@ exports.bookinstance_update_get = function(req, res, next) {
                 return next(err);
             }
             // Success.
-            res.render('bookinstance_form', { title: 'Update  BookInstance', book_list : results.books, selected_book : results.bookinstance.book._id, bookinstance:results.bookinstance });
+            res.render('bookinstance_form', { title: 'Update  BookInstance', book_list : [results.bookinstance.book], selected_book : results.bookinstance.book._id, bookinstance:results.bookinstance });
         });
 
 };
